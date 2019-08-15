@@ -148,6 +148,7 @@ class YOLOLayer(nn.Module):
             .permute(0, 1, 3, 4, 2)
             .contiguous()
         )
+        print(prediction.size())
 
         # Get outputs
         x = torch.sigmoid(prediction[..., 0])  # Center x
@@ -177,11 +178,10 @@ class YOLOLayer(nn.Module):
             -1,
         )
 
+        # target size [_,6]
         if targets is None:
             return output, 0
         else:
-            print(targets.size())
-            return
             iou_scores, class_mask, obj_mask, noobj_mask, tx, ty, tw, th, tcls, tconf = build_targets(
                 pred_boxes=pred_boxes,
                 pred_cls=pred_cls,
