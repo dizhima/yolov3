@@ -172,6 +172,7 @@ class YOLOLayer(nn.Module):
         pred_boxes[..., 2] = torch.exp(w.data) * self.anchor_w
         pred_boxes[..., 3] = torch.exp(h.data) * self.anchor_h
 
+        # output size: (b_size, , num_cls+5)
         output = torch.cat(
             (
                 pred_boxes.view(num_samples, -1, 4) * self.stride,
@@ -180,7 +181,9 @@ class YOLOLayer(nn.Module):
             ),
             -1,
         )
-        print(output.size())
+        print(pred_boxes.size())
+        print(pred_conf.size())
+        print(pre_cls.size())
 
         # target size (_,6)
         if targets is None:
