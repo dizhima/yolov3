@@ -143,12 +143,15 @@ class YOLOLayer(nn.Module):
         num_samples = x.size(0)
         grid_size = x.size(2)
 
+        # prediction size 
+        #     (b_size, num_anchors, numcls+5, grid_size, grid_size)
+        # >>> (b_size, num_anchors, grid_size, grid_size, numcls+5)
+        # eg. torch.Size([16, 3, 60, 60, 85])
         prediction = (
             x.view(num_samples, self.num_anchors, self.num_classes + 5, grid_size, grid_size)
             .permute(0, 1, 3, 4, 2)
             .contiguous()
         )
-        print(prediction.size())
 
         # Get outputs
         x = torch.sigmoid(prediction[..., 0])  # Center x
@@ -177,8 +180,9 @@ class YOLOLayer(nn.Module):
             ),
             -1,
         )
+        print(output.size())
 
-        # target size [_,6]
+        # target size (_,6)
         if targets is None:
             return output, 0
         else:
