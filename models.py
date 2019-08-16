@@ -183,7 +183,7 @@ class YOLOLayer(nn.Module):
         )
 
         # target size (_,6)
-        print(target size)
+        print(target.size())
         if targets is None:
             return output, 0
         else:
