@@ -2,7 +2,7 @@ person
 bicycle
 car
 motorcycle
-aeroplane
+airplane
 bus
 train
 truck
@@ -30,7 +30,6 @@ suitcase
 frisbee
 skis
 snowboard
-toothbrush
 kite
 baseball bat
 baseball glove
@@ -55,12 +54,12 @@ pizza
 donut
 cake
 chair
-sofa
-pottedplant
+couch
+potted plant
 bed
-diningtable
+dining table
 toilet
-tvmonitor
+tv
 laptop
 mouse
 remote
@@ -77,4 +76,5 @@ vase
 scissors
 teddy bear
 hair drier
+toothbrush
 sports ball
