@@ -104,7 +104,7 @@ class EmptyLayer(nn.Module):
 
 
 class RelationNetwork(nn.Module):
-    def __init__(self, input_size=2048, hidden_size=1024):
+    def __init__(self, input_size=256, hidden_size=128):
         super(RelationNetwork, self).__init__()
         self.rn = nn.Sequential(
             nn.Conv3d(input_size, hidden_size, 1, 1, bias=False),
@@ -120,7 +120,7 @@ class RelationNetwork(nn.Module):
 
 
 class AttributeNetwork(nn.Module):
-    def __init__(self, input_size=768, hidden_size=1024, output_size=1024):
+    def __init__(self, input_size=768, hidden_size=256, output_size=128):
         super().__init__()
         self.word_emb_transformer = nn.Sequential(
             nn.Linear(input_size, hidden_size),
