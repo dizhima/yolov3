@@ -59,6 +59,15 @@ if __name__ == "__main__":
     # Initiate model
     model = Darknet(opt.model_def)#.to(device)
     model.apply(weights_init_normal)
+
+    # If specified we start from checkpoint
+    if opt.pretrained_weights:
+        if opt.pretrained_weights.endswith(".pth"):
+            model.load_state_dict(torch.load(opt.pretrained_weights))
+        else:
+            model.load_darknet_weights(opt.pretrained_weights)
+
+    # use GPU
     use_gpu = torch.cuda.is_available()
     if use_gpu:
         if torch.cuda.device_count() > 1:
@@ -72,13 +81,6 @@ if __name__ == "__main__":
             print ('USE GPU')
     else:
         print ('USE CPU')
-
-    # If specified we start from checkpoint
-    if opt.pretrained_weights:
-        if opt.pretrained_weights.endswith(".pth"):
-            model.load_state_dict(torch.load(opt.pretrained_weights))
-        else:
-            model.load_darknet_weights(opt.pretrained_weights)
 
     # Get dataloader
     dataset = ListDataset(train_path, augment=True, multiscale=opt.multiscale_training)
