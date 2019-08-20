@@ -61,12 +61,7 @@ if __name__ == "__main__":
     if use_gpu:
         if torch.cuda.device_count() > 1:
             print("Let's use", torch.cuda.device_count(), "GPUs!")
-            if args.retrain is None:
-                model = torch.nn.DataParallel(model)
-            else:
-                while isinstance(model, torch.nn.DataParallel):
-                    model = model.module
-                model = torch.nn.DataParallel(model)
+            model = torch.nn.DataParallel(model)
             model = model.cuda()
             cudnn.benchmark = True
         else:
