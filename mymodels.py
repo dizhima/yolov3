@@ -71,10 +71,10 @@ def create_modules(module_defs):
             anchors = [int(x) for x in module_def["anchors"].split(",")]
             anchors = [(anchors[i], anchors[i + 1]) for i in range(0, len(anchors), 2)]
             anchors = [anchors[i] for i in anchor_idxs]
-            num_classes = int(module_def["classes"])
+            # num_classes = int(module_def["classes"])
             img_size = int(hyperparams["height"])
             # Define detection layer
-            yolo_layer = YOLOLayer(anchors, num_classes, img_size)
+            yolo_layer = YOLOLayer(anchors, img_size)
             modules.add_module(f"yolo_{module_i}", yolo_layer)
         # Register module list and number of output filters
         module_list.append(modules)
