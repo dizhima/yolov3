@@ -109,8 +109,10 @@ if __name__ == "__main__":
         for batch_i, (_, imgs, targets) in enumerate(dataloader):
             batches_done = len(dataloader) * epoch + batch_i
 
-            imgs = Variable(imgs.to(device))
-            targets = Variable(targets.to(device), requires_grad=False)
+            # imgs = Variable(imgs.to(device))
+            # targets = Variable(targets.to(device), requires_grad=False)
+            imgs = Variable(imgs).cuda()
+            targets = Variable(targets, requires_grad=False).cuda()
 
             loss, outputs = model(Embedding_features, imgs, targets)
             loss.backward()
