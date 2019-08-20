@@ -338,4 +338,4 @@ def load_Embeddings(paths, classes):
     out = []
     for key in classes:
         out.append(Embedding_features[key])
-    return torch.from_numpy(np.array(out)).to(device)
+    return torch.from_numpy(np.array(out)).float().to(device)
