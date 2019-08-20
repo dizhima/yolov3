@@ -298,14 +298,10 @@ def build_targets(pred_boxes, pred_cls, target, anchors, ignore_thres):
     b, target_labels = target[:, :2].long().t()
     gx, gy = gxy.t()
     gw, gh = gwh.t()
-    gi, gj = gxy.long().t()
+    gi, gj = gxy.t().long()#gxy.long().t()
     # Set masks
-    gi = torch.clamp(gi, 0, noobj_mask.size()[2]-1)
-    gj = torch.clamp(gj, 0, noobj_mask.size()[3]-1)
     obj_mask[b, best_n, gj, gi] = 1
     noobj_mask[b, best_n, gj, gi] = 0
-    # obj_mask[b, best_n, gj, gi] = 1
-    # noobj_mask[b, best_n, gj, gi] = 0
 
     # Set noobj mask to zero where iou exceeds ignore threshold
     for i, anchor_ious in enumerate(ious.t()):
