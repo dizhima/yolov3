@@ -58,7 +58,7 @@ if __name__ == "__main__":
     Embedding_features = load_Embeddings([embed_path], class_names) # size(num_cls, 768)
 
     # Initiate model
-    model = Darknet(opt.model_def)#.to(device)
+    model = Darknet(opt.model_def).to(device)
     model.apply(weights_init_normal)
 
     # If specified we start from checkpoint
@@ -77,7 +77,7 @@ if __name__ == "__main__":
                                 rank=0)  # distributed training node rank
         model = torch.nn.parallel.DistributedDataParallel(model)
         model.yolo_layers = model.module.yolo_layers  # move yolo layer indices to top level
-    model = model.to(device)
+    # model = model.to(device)
 
     # Get dataloader
     dataset = ListDataset(train_path, augment=True, multiscale=opt.multiscale_training)
