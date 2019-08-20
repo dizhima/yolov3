@@ -169,7 +169,7 @@ class YOLOLayer(nn.Module):
         self.anchor_h = self.scaled_anchors[:, 1:2].view((1, self.num_anchors, 1, 1))
 
     def forward(self, emb_ft, x, targets=None, img_dim=None):
-        self.num_classes = Embed_ft.size()[0]
+        self.num_classes = emb_ft.size()[0]
 
         # Tensors for cuda support
         FloatTensor = torch.cuda.FloatTensor if x.is_cuda else torch.FloatTensor
