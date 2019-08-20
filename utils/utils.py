@@ -10,6 +10,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 
+import json
+
 
 def to_cpu(tensor):
     return tensor.detach().cpu()
@@ -319,3 +321,21 @@ def build_targets(pred_boxes, pred_cls, target, anchors, ignore_thres):
 
     tconf = obj_mask.float()
     return iou_scores, class_mask, obj_mask, noobj_mask, tx, ty, tw, th, tcls, tconf
+
+
+def load_Embeddings(paths, classes):
+    '''
+    load Bert Embeddings feature from json file
+    output: torch.tensor
+    '''
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+    Embedding_features = {}
+    for path in paths:
+        fp = open(path, "r")
+        Embedding_feature = json.load(fp)
+        Embedding_features.update(Embedding_feature)
+    out = []
+    for key in classes:
+        out.append(Embedding_features[key])
+    return torch.from_numpy(np.array(out)).to(device)
