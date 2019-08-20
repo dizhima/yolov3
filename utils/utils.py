@@ -296,7 +296,7 @@ def build_targets(pred_boxes, pred_cls, target, anchors, ignore_thres):
     best_ious, best_n = ious.max(0)
     # Separate target values
     b, target_labels = target[:, :2].long().t()
-    print(target[:, :2].long().t())
+    print(b)
     gx, gy = gxy.t()
     gw, gh = gwh.t()
     gi, gj = gxy.long().t()
