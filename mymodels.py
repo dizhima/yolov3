@@ -123,10 +123,10 @@ class AttributeNetwork(nn.Module):
     def __init__(self, input_size=768, hidden_size=256, output_size=128):
         super().__init__()
         self.word_emb_transformer = nn.Sequential(
-            nn.Linear(input_size, hidden_size),
+            nn.Conv1d(input_size, hidden_size, 1, 1, bias=False),
             nn.BatchNorm1d(hidden_size),
             nn.ReLU(),
-            nn.Linear(hidden_size, output_size),
+            nn.Conv1d(hidden_size, output_size, 1, 1, bias=False),
             nn.BatchNorm1d(output_size),
             nn.ReLU()
         )
