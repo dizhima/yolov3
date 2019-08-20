@@ -23,6 +23,7 @@ from torch.autograd import Variable
 import torch.optim as optim
 
 # import torch.backends.cudnn as cudnn
+import torch.distributed as dist
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -69,19 +70,14 @@ if __name__ == "__main__":
 
     # use GPU
     use_gpu = torch.cuda.is_available()
-    if use_gpu:
-        if torch.cuda.device_count() > 1:
-            print("Let's use", torch.cuda.device_count(), "GPUs!")
-            model = torch.nn.DataParallel(model)
-            model.yolo_layers = model.module.yolo_layers
-            model = model.cuda()
-            # cudnn.benchmark = True
-        else:
-            model = model.cuda()
-            # cudnn.benchmark = True
-            print ('USE GPU')
-    else:
-        print ('USE CPU')
+    if torch.cuda.device_count() > 1:
+        dist.init_process_group(backend='nccl',  # 'distributed backend'
+                                init_method='tcp://127.0.0.1:9999',  # distributed training init method
+                                world_size=1,  # number of nodes for distributed training
+                                rank=0)  # distributed training node rank
+        model = torch.nn.parallel.DistributedDataParallel(model)
+        model.yolo_layers = model.module.yolo_layers  # move yolo layer indices to top level
+    model = model.to(device)
 
     # Get dataloader
     dataset = ListDataset(train_path, augment=True, multiscale=opt.multiscale_training)
