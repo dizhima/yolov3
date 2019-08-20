@@ -55,8 +55,26 @@ if __name__ == "__main__":
     Embedding_features = load_Embeddings([embed_path], class_names) # size(num_cls, 768)
 
     # Initiate model
-    model = Darknet(opt.model_def).to(device)
+    model = Darknet(opt.model_def)#.to(device)
     model.apply(weights_init_normal)
+    use_gpu = torch.cuda.is_available()
+    if use_gpu:
+        if torch.cuda.device_count() > 1:
+            print("Let's use", torch.cuda.device_count(), "GPUs!")
+            if args.retrain is None:
+                model = torch.nn.DataParallel(model)
+            else:
+                while isinstance(model, torch.nn.DataParallel):
+                    model = model.module
+                model = torch.nn.DataParallel(model)
+            model = model.cuda()
+            cudnn.benchmark = True
+        else:
+            model = model.cuda()
+            cudnn.benchmark = True
+            print ('USE GPU')
+    else:
+        print ('USE CPU')
 
     # If specified we start from checkpoint
     if opt.pretrained_weights:
@@ -177,4 +195,7 @@ if __name__ == "__main__":
             print(f"---- mAP {AP.mean()}")
 
         if epoch % opt.checkpoint_interval == 0:
-            torch.save(model.state_dict(), f"checkpoints/yolov3_ckpt_%d.pth" % epoch)
+            if isinstance(model, torch.nn.DataParallel):
+                torch.save(model.module.state_dict(), f"checkpoints/yolov3_ckpt_%d.pth" % epoch)
+            else:    
+                torch.save(model.state_dict(), f"checkpoints/yolov3_ckpt_%d.pth" % epoch)
