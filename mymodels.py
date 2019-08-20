@@ -191,7 +191,7 @@ class YOLOLayer(nn.Module):
         )
 
         ### ZLS ###
-        s_emb = self.AN(embed_ft)
+        s_emb = self.AN(emb_ft)
         s_emb = s_emb.view(1, self.num_classes, self.num_ft, 1, 1).permute(0,2,1,3,4).contiguous()
         s_emb = s_emb.repeat(num_samples,num_anchors,1,grid_size,grid_size)
         v_emb = prediction[...,5:].permute(0,1,4,2,3).contiguous().repeat(1,1,num_anchors,1,1)
