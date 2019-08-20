@@ -296,6 +296,7 @@ def build_targets(pred_boxes, pred_cls, target, anchors, ignore_thres):
     best_ious, best_n = ious.max(0)
     # Separate target values
     b, target_labels = target[:, :2].long().t()
+    print(target[:, :2].long().t())
     gx, gy = gxy.t()
     gw, gh = gwh.t()
     gi, gj = gxy.long().t()
@@ -306,13 +307,11 @@ def build_targets(pred_boxes, pred_cls, target, anchors, ignore_thres):
     # gj[gj > nG - 1] = nG - 1
     # ###################
     # Set masks
-    print(len(ious))
     obj_mask[b, best_n, gj, gi] = 1
     noobj_mask[b, best_n, gj, gi] = 0
 
     # Set noobj mask to zero where iou exceeds ignore threshold
     for i, anchor_ious in enumerate(ious.t()):
-        print(b)
         noobj_mask[b[i], anchor_ious > ignore_thres, gj[i], gi[i]] = 0
 
     # Coordinates
