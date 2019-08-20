@@ -152,7 +152,7 @@ class YOLOLayer(nn.Module):
         self.metrics = {}
         self.img_dim = img_dim
         self.grid_size = 0  # grid size
-        self.num_ft = 1024
+        self.num_ft = 128
         self.AN = AttributeNetwork() # attribute net
         self.RN = RelationNetwork(self.num_ft*2) # relation net
 
