@@ -306,7 +306,7 @@ def build_targets(pred_boxes, pred_cls, target, anchors, ignore_thres):
     # gj[gj > nG - 1] = nG - 1
     # ###################
     # Set masks
-    print(gj, gi)
+    print(b, best_n,gj, gi)
     obj_mask[b, best_n, gj, gi] = 1
     noobj_mask[b, best_n, gj, gi] = 0
 
