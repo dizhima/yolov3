@@ -22,7 +22,7 @@ from torchvision import transforms
 from torch.autograd import Variable
 import torch.optim as optim
 
-import torch.backends.cudnn as cudnn
+# import torch.backends.cudnn as cudnn
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -74,10 +74,10 @@ if __name__ == "__main__":
             print("Let's use", torch.cuda.device_count(), "GPUs!")
             model = torch.nn.DataParallel(model)
             model = model.cuda()
-            cudnn.benchmark = True
+            # cudnn.benchmark = True
         else:
             model = model.cuda()
-            cudnn.benchmark = True
+            # cudnn.benchmark = True
             print ('USE GPU')
     else:
         print ('USE CPU')
